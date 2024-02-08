@@ -4,6 +4,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+// как изменяются числа при вводе и прогонке через функцию фибоначчи
 // 0 -> 0
 // 1 -> 1
 // 2 -> 1
@@ -11,6 +12,7 @@
 // 4 -> 3
 // 5 -> 5 и т.д.
 
+// функция, считающая числа фибоначчи
 unsigned long long fibonacci(unsigned long long n) {
   if (n <= 1) {
     return n;
@@ -29,6 +31,7 @@ unsigned long long fibonacci(unsigned long long n) {
   return fib_2;
 }
 
+// функция для подсчёта факториала числа
 unsigned long long factorial(unsigned long long n) {
   if (n == 0 || n == 1) {
     return 1;
@@ -46,12 +49,15 @@ unsigned long long factorial(unsigned long long n) {
   }
 }
 
+// мейн
 int main(int argc, char *argv[]) {
+// как именно выводится через командную строку и проверка на количество аргументов в командной строке
   if (argc != 2) {
     printf("Usage: ./program <number>\n");
     return 1;
   }
 
+// проверяем получаемое число
   int n = atoi(argv[1]);
   if (n < 0) {
     printf("Invalid input. Please enter a non-negative integer the next "
@@ -59,12 +65,14 @@ int main(int argc, char *argv[]) {
     return 0;
   }
 
+// создаём процессного ребёнка
   pid_t chpid = fork();
 
+// если у процесса число меньше нуля, то всё плохо
   if (chpid < 0) {
     printf("fork gone wrong\n");
     return 1;
-
+// если 0, то это ребёночий процесс
   } else if (chpid == 0) { // child process
     printf("info about child process: pid = %d, ppid = %d\ncalculatiing "
            "factorial\n",
@@ -73,7 +81,7 @@ int main(int argc, char *argv[]) {
     printf("child process with pid %d calculated factorial of %d as %llu\n",
            getpid(), n, result);
     printf("\n");
-
+// если большее нуля число, то это родительский процесс
   } else { // parent process
     printf("info about parent process: pid = %d, ppid = %d\ncalculatiing "
            "fibonacci\n",
