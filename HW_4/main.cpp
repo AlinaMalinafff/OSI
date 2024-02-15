@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
+  // создание буффера
   char buffer[BUFF_SIZE];
   int bytes_read;
   int bytes_written;
@@ -42,16 +43,19 @@ int main(int argc, char *argv[]) {
   // чтение данных из файла и запись в другой файл
   while ((bytes_read = read(input_fd, buffer, BUFF_SIZE)) > 0) {
     bytes_written = write(output_fd, buffer, bytes_read);
+    // если ошибка в чтении
     if (bytes_read == -1) {
       printf("ошибка detected:");
       perror("ошибка в чтении данных из файла");
       return 1;
     }
+    // сбилась запись в файл
     if (bytes_written != bytes_read) {
       printf("ошибка detected:");
       perror("ошибка в записи в файл");
       return 1;
     }
+    // ошибка записи в файл
     if (bytes_written == -1) {
       printf("ошибка detected:");
       perror("ошибка в записи данных в файл");
@@ -63,6 +67,7 @@ int main(int argc, char *argv[]) {
   close(input_fd);
   close(output_fd);
 
+  // флаг, что всё прошло хорошо
   printf("спасибо за выбор нашей программы для переноса данных из файла в файл :)\n");
 
   return 0;
